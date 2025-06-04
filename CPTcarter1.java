@@ -11,11 +11,12 @@ public class CPTcarter1{
 		con.setBackgroundColor(new Color(255, 255, 255));
 		
 		// Words
-		con.setDrawColor(new Color(0, 0, 0));
+		con.setDrawColor(new Color(211, 211, 211));
 		Font fntTNRjoke = con.loadFont("times.ttf", 10);
 		con.setDrawFont(fntTNRjoke);
 		con.drawString("super secret joke :) [ J ]", 0, 0);
 		
+		con.setDrawColor(new Color(0, 0, 0));
 		Font fntTNR = con.loadFont("times.ttf", 35);
 		con.setDrawFont(fntTNR);
 	
