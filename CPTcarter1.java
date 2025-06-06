@@ -7,12 +7,11 @@ import java.util.Arrays;
 public class CPTcarter1{
 	public static void main(String[] args){
 		Console con = new Console("BlackJack", 1280, 720);
-		// Variables
+		// Fonts and images
 		Font fntTNRjoke = con.loadFont("times.ttf", 10);
 		Font fntTNR = con.loadFont("times.ttf", 35);
 		Font fntTNRsmall = con.loadFont("times.ttf", 20);
 		BufferedImage imgPoker = con.loadImage("Blackjack.png");
-		
 		
 		// Main Menu
 		// Background
@@ -40,8 +39,48 @@ public class CPTcarter1{
 		System.out.println("entered letter: "+chrInput);
 		
 		if(chrInput == 'P' || chrInput == 'p'){ // Playing game
-			con.clear();
-			con.setBackgroundColor(new Color(0, 0, 0));
+			// Setting Varialbes
+			boolean blnPlay = true;
+			String strName = "";
+			int intMoney = 1000;
+			
+			// Cleaning the console
+			con.setBackgroundColor(new Color(255, 255, 255));
+			con.repaint();
+			
+			// Entering Username
+			con.setTextColor(new Color(0, 0, 0));
+			con.println("Enter your username");
+			strName = con.readLine();
+			
+			// Cheating is fun
+			if(strName.equalsIgnoreCase("statitan")){
+			intMoney = 10000000;
+			
+				while(blnPlay = true && intMoney > 0){
+					con.clear();
+					int intBet;
+					
+					// Bet amount
+					con.println("you have $"+intMoney+". Place your Bet:");
+					intBet = con.readInt();
+					con.clear();
+					
+					intMoney = intMoney - intBet;
+					
+					if(intMoney < intBet){
+					con.println("Not enough money to bet.");
+					con.sleep(1000);
+					
+					}else if(intBet <= 0){
+					con.println("Invalid bet.");
+					con.sleep(1000);
+					}
+					
+					
+				}
+			}
+			
 			
 		}else if(chrInput == 'L' || chrInput == 'l'){ // Leaderboard
 			con.clear();
@@ -56,9 +95,9 @@ public class CPTcarter1{
 			con.setDrawFont(fntTNR);
 			
 			con.drawString("Help Menu", 560, 300);
-			con.drawString("Basic Rules [ R ]", 560, 300);
-			con.drawString("Special Rules [ S ]", 560, 340);
-			con.drawString("Credits [ C ]", 550, 380);
+			con.drawString("Basic Rules [ R ]", 560, 340);
+			con.drawString("Special Rules [ S ]", 560, 380);
+			con.drawString("Credits [ C ]", 550, 420);
 			con.repaint();	
 			
 			char chrHelpInput = con.getChar();
@@ -69,8 +108,22 @@ public class CPTcarter1{
 				con.setBackgroundColor(new Color(255, 255, 255));
 				con.setDrawColor(new Color(0, 0, 0));
 				con.setDrawFont(fntTNRsmall);
+				con.drawString("The goal is to get as close to 21 as possible without going over", 400, 200);
+				con.drawString("Beat the dealer's hands to win 2x your bet",480,240);
+				con.drawString("Each player is dealt 2 hands ",530,280);
+				con.drawString("Face cards ( J, Q, K ) are worth 10",510,320);
+				con.drawString("Aces are worth 11 or 1 when you push over 21",470,360);
+				con.drawString("Player can choose to hit ( draw another card ) or stand ( End turn )",400,400);
+				con.drawString("Dealer hits until 17 is reached",530,440);
+				con.drawString("Exit [ X ]",610,480);
+				con.repaint();
 				
+				char chrHelpExit = con.getChar();
+				System.out.println("entered letter: "+chrHelpExit);
 				
+				if(chrHelpExit == 'X' || chrHelpExit == 'x'){ // Exit
+					con.closeConsole();
+				}
 				
 			}else if(chrHelpInput == 'S' || chrHelpInput == 's'){ // Special Rules
 				con.clear();
@@ -81,13 +134,13 @@ public class CPTcarter1{
 				con.drawString("Double Down - If your first 2 cards add up to 9, 10 or 11, you will double your bet and draw one more card.", 200, 340);
 				con.drawString("Five Cards - If you reach 5 cards, you automatically get 3x your bet but same applies to dealers.", 230, 380);
 				con.drawString("Black Jack - If your first two cards equals to 21, you multiply 3x your original bet", 290, 420);
-				con.drawString("Exit [ X ]",570, 460);
+				con.drawString("Exit [ X ]",590, 460);
 				con.repaint();
 				
 				char chrHelpExit = con.getChar();
 				System.out.println("entered letter: "+chrHelpExit);
 				
-				if(chrHelpExit == 'X' || chrHelpExit == 'x'){
+				if(chrHelpExit == 'X' || chrHelpExit == 'x'){ // Exit
 					con.closeConsole();
 				}
 			}else if(chrHelpInput == 'C' || chrHelpInput == 'c'){ // Credits
@@ -101,7 +154,8 @@ public class CPTcarter1{
 				
 				char chrHelpExit = con.getChar();
 				System.out.println("entered letter: "+chrHelpExit);
-				if(chrHelpExit == 'X' || chrHelpExit == 'x'){
+				
+				if(chrHelpExit == 'X' || chrHelpExit == 'x'){ // Exit
 					con.closeConsole();
 				}
 				
@@ -118,7 +172,7 @@ public class CPTcarter1{
 			con.repaint();
 		}
 			
-		// Gameplay
+		
 		
 		
 		

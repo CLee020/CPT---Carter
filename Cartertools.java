@@ -20,29 +20,29 @@ public class Cartertools{
 			}
 		}
 		
-		int intVTemp;
-		int intSTemp;
-		int intRITemp;
+		int intTempValue;
+		int intTempSuit;
+		int intTempInteger;
 		
 		// Sorting
 		for(int intCount2 = 0; intCount2 < intCards - 1; intCount2++){ 
 			for(int intCount = 0; intCount < intCards - 1; intCount++){
 				if(intDeck[intCount][2] > intDeck[intCount+1][2]){
 					
-					// Swapping card value
-					intVTemp = intDeck[intCount][0];
+					// Swapping card
+					intTempValue = intDeck[intCount][0];
 					intDeck[intCount][0] = intDeck[intCount+1][0];
-					intDeck[intCount+1][0] = intVTemp;
+					intDeck[intCount+1][0] = intTempValue;
 					
-					// Swapping suit value
-					intSTemp = intDeck[intCount][1];
+					// Swapping suit
+					intTempSuit = intDeck[intCount][1];
 					intDeck[intCount][1] = intDeck[intCount+1][1];
-					intDeck[intCount+1][1] = intSTemp;
+					intDeck[intCount+1][1] = intTempSuit;
 					
 					// Swapping random integer value 
-					intRITemp = intDeck[intCount][2];
+					intTempInteger = intDeck[intCount][2];
 					intDeck[intCount][2] = intDeck[intCount+1][2];
-					intDeck[intCount+1][2] = intRITemp;
+					intDeck[intCount+1][2] = intTempInteger;
 					}
 				}
 			}
@@ -53,5 +53,7 @@ public class Cartertools{
 		
 		return intDeck;
 		}
+		
+		 
 	}
 }
