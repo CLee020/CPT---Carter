@@ -71,12 +71,29 @@ public class CPTcarter1{
 					if(intMoney < intBet){
 					con.println("Not enough money to bet.");
 					con.sleep(1000);
+					con.closeConsole();
 					
 					}else if(intBet <= 0){
 					con.println("Invalid bet.");
 					con.sleep(1000);
 					}
 					
+					int intDeck[][] = Cartertools.DeckCards();
+					
+					int[][] intPlayer = new int[5][2];
+					int[][] intDealer = new int[5][2];
+						
+					int intcount;	
+						
+					for(intcount = 0; intcount < 5; intcount++){
+						intPlayer[intcount][0] = intDeck[intcount][0];
+						intPlayer[intcount][1] = intDeck[intcount][1];
+		
+						intDealer[intcount][0] = intDeck[intcount + 5][0];
+						intDealer[intcount][1] = intDeck[intcount + 5][1];
+					}
+					
+						
 					
 				}
 			}
@@ -143,6 +160,7 @@ public class CPTcarter1{
 				if(chrHelpExit == 'X' || chrHelpExit == 'x'){ // Exit
 					con.closeConsole();
 				}
+				
 			}else if(chrHelpInput == 'C' || chrHelpInput == 'c'){ // Credits
 				con.clear();
 				con.setBackgroundColor(new Color(255, 255, 255));
