@@ -61,5 +61,39 @@ public class Cartertools{
 	return strValues[intValue] + " of " + strSuits[intSuit];
 	}
 		
+	public static int handValue(int[][] intPlayer, int intPlayerCards){
+		
+		int intPSum = 0;
+		int intAce = 0;
+		
+		//calculating value of hand + adjusting for special rules
+		for(int intCount = 0; intCount < intPlayerCards; intCount++){
+			int intCardValue = intPlayer[intCount][0];
+			// adjusting ace value to 11 
+			if(intCardValue == 0){
+				intPSum = intPSum + 11;
+				//counting number of aces in player hand
+				intAce++;
+			// Making jack, queen and king values equal 10
+			}else if(intCardValue >= 10){
+				intPSum = intPSum + 10;
+			}else{
+				intPSum = intPSum + (intCardValue + 1);
+			}
+		}
+		
+		//scenario if player has an ace but sum over 21
+		//while loop because player could have two aces
+		while(intAce > 0 && intPSum > 21){
+			//lowers ace count
+			intAce--;
+			//converts 11 to 1
+			intPSum = intPSum - 10;
+		
+		}
+		return intPSum;
+	}
+
+	
 	
 }

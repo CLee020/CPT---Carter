@@ -91,6 +91,7 @@ public class CPTcarter1{
 					// Player hand values
 					int intPlayerCards = 2;
 					int intPlayerHand = 0;
+					int intPSum;
 					// order of shuffled deck
 					int intDeckNum = 0;
 					
@@ -123,34 +124,7 @@ public class CPTcarter1{
 					
 					con.println();
 					
-					int intPSum = 0;
-					int intAce = 0;
-		
-					//calculating value of hand + adjusting for special rules
-
-					for(int intCount = 0; intCount < intPlayerCards; intCount++){
-						int intCardValue = intPlayer[intCount][0];
-						// adjusting ace value to 11 
-						if(intCardValue == 0){
-							intPSum = intPSum + 11;
-							//counting number of aces in player hand
-							intAce++;
-						// Making jack, queen and king values equal 10
-						}else if(intCardValue >= 10){
-							intPSum = intPSum + 10;
-						}else{
-							intPSum = intPSum + (intCardValue + 1);
-						}
-					}
-		
-					//scenario if player has an ace but sum over 21
-					//while loop because player could have two aces
-					while(intAce > 0 && intPSum > 21){
-						//lowers ace count
-						intAce--;
-						//converts 11 to 1
-						intPSum = intPSum - 10;
-					}
+					intPSum = Cartertools.handValue(intPlayer, intPlayerCards);
 					
 					con.println("Current hand Value: "+ intPSum);
 					System.out.println("Sum: "+intPSum);
@@ -161,7 +135,7 @@ public class CPTcarter1{
 						System.out.println("Money = "+intMoney);
 						
 					}else if(intPSum == 9 || intPSum == 10 || intPSum == 11){ // Double Down
-						con.println("Your total is "+intPSum+". Do you want to double down? [ Y ]/[ N ]");
+						con.println("Do you want to double down? [ Y ]/[ N ]");
 						char chrDoubleDown;
 						chrDoubleDown = con.getChar();
 						if(chrDoubleDown == 'Y' || chrDoubleDown == 'y' && intMoney >= intBet * 2){ // If they want to Double down
@@ -174,10 +148,26 @@ public class CPTcarter1{
 							String strDD;
 							strDD = Cartertools.CardsName(intPlayer[intPlayerCards][0], intPlayer[intPlayerCards][1]);
 							
+							intDeckNum++;
+							intPlayerCards++;
 							
+							con.println("Your new card is "+strDD);
+							// new sum
+							intPSum = Cartertools.handValue(intPlayer, intPlayerCards);
+							System.out.println("New sum: "+intPSum);
 							
+							// if player doesn't have enough money
+						}else if(intMoney < intBet * 2){
+							con.println();
+							con.println("You do not have enough to Double down");
 						}
 					}
+					
+					// hit or stay
+					con.println();
+					
+					
+					
 					
 				}
 			}
