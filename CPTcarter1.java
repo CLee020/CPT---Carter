@@ -84,7 +84,17 @@ public class CPTcarter1{
 					int[][] intDealer = new int[5][2];
 						
 					int intcount;	
-						
+					// Printing Starting cards
+					String strDealerTemp;
+					String strPlayerTemp;
+					String strPlayerTemp2;
+					// Player hand values
+					int intPlayerCards = 2;
+					int intPlayerHand = 0;
+					// order of shuffled deck
+					int intDeckNum = 0;
+					
+					// setting up the player and dealer hand 
 					for(intcount = 0; intcount < 5; intcount++){
 						intPlayer[intcount][0] = intDeck[intcount][0];
 						intPlayer[intcount][1] = intDeck[intcount][1];
@@ -93,7 +103,81 @@ public class CPTcarter1{
 						intDealer[intcount][1] = intDeck[intcount + 5][1];
 					}
 					
+					// Dealers hand
+					con.println("The dealer's cards are: ");
+					strDealerTemp = Cartertools.CardsName(intDealer[0][0], intDealer[0][1]);
+					con.println(strDealerTemp);
+					con.println();
+					
+					// Players hand
+					con.println("Your hand: ");
+					
+					// Players first card
+					strPlayerTemp = Cartertools.CardsName(intPlayer[0][0], intPlayer[0][1]);
+					con.println(strPlayerTemp);
+					System.out.println("Player card 1: "+strPlayerTemp);
+					// Players second card
+					strPlayerTemp2 = Cartertools.CardsName(intPlayer[1][0], intPlayer[1][1]);
+					con.println(strPlayerTemp2);
+					System.out.println("Player card 2: "+strPlayerTemp2);
+					
+					con.println();
+					
+					int intPSum = 0;
+					int intAce = 0;
+		
+					//calculating value of hand + adjusting for special rules
+
+					for(int intCount = 0; intCount < intPlayerCards; intCount++){
+						int intCardValue = intPlayer[intCount][0];
+						// adjusting ace value to 11 
+						if(intCardValue == 0){
+							intPSum = intPSum + 11;
+							//counting number of aces in player hand
+							intAce++;
+						// Making jack, queen and king values equal 10
+						}else if(intCardValue >= 10){
+							intPSum = intPSum + 10;
+						}else{
+							intPSum = intPSum + (intCardValue + 1);
+						}
+					}
+		
+					//scenario if player has an ace but sum over 21
+					//while loop because player could have two aces
+					while(intAce > 0 && intPSum > 21){
+						//lowers ace count
+						intAce--;
+						//converts 11 to 1
+						intPSum = intPSum - 10;
+					}
+					
+					con.println("Current hand Value: "+ intPSum);
+					System.out.println("Sum: "+intPSum);
+					
+					if(intPSum == 21 && intPlayerCards == 2){ // BlackJack 
+						intMoney = intMoney + intBet * 3;
+						con.println("BlackJack!!! You get 3x your bet!");
+						System.out.println("Money = "+intMoney);
 						
+					}else if(intPSum == 9 || intPSum == 10 || intPSum == 11){ // Double Down
+						con.println("Your total is "+intPSum+". Do you want to double down? [ Y ]/[ N ]");
+						char chrDoubleDown;
+						chrDoubleDown = con.getChar();
+						if(chrDoubleDown == 'Y' || chrDoubleDown == 'y' && intMoney >= intBet * 2){ // If they want to Double down
+							intBet = intBet * 2;
+							
+							// Third card
+							intPlayer[intPlayerCards][0] = intDeck[intDeckNum][0];
+							intPlayer[intPlayerCards][1] = intDeck[intDeckNum][1];
+							
+							String strDD;
+							strDD = Cartertools.CardsName(intPlayer[intPlayerCards][0], intPlayer[intPlayerCards][1]);
+							
+							
+							
+						}
+					}
 					
 				}
 			}
@@ -159,8 +243,7 @@ public class CPTcarter1{
 				
 				if(chrHelpExit == 'X' || chrHelpExit == 'x'){ // Exit
 					con.closeConsole();
-				}
-				
+				}		
 			}else if(chrHelpInput == 'C' || chrHelpInput == 'c'){ // Credits
 				con.clear();
 				con.setBackgroundColor(new Color(255, 255, 255));
