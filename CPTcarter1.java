@@ -56,126 +56,259 @@ public class CPTcarter1{
 			// Cheating is fun
 			if(strName.equalsIgnoreCase("statitan")){
 			intMoney = 10000000;
+			}
 			
-				while(blnPlay = true && intMoney > 0){
-					con.clear();
-					int intBet;
+			while(blnPlay = true && intMoney > 0){
+				con.clear();
+				
+				// Bet amount
+				con.println("you have $"+intMoney+". Place your Bet:");
+				intBet = con.readInt();
+				con.clear();
 					
-					// Bet amount
-					con.println("you have $"+intMoney+". Place your Bet:");
-					intBet = con.readInt();
-					con.clear();
+				intMoney = intMoney - intBet;
+				
+				if(intMoney < intBet){
+				con.println("Not enough money to bet.");
+				con.sleep(1000);
+				con.closeConsole();
 					
-					intMoney = intMoney - intBet;
+				}else if(intBet <= 0){
+				con.println("Invalid bet.");
+				con.sleep(1000);
+				con.closeConsole();
+				
+				}
 					
-					if(intMoney < intBet){
-					con.println("Not enough money to bet.");
-					con.sleep(1000);
-					con.closeConsole();
+				int intDeck[][] = Cartertools.DeckCards();
+				
+				int[][] intPlayer = new int[5][2];
+				int[][] intDealer = new int[5][2];
 					
-					}else if(intBet <= 0){
-					con.println("Invalid bet.");
-					con.sleep(1000);
-					}
-					
-					int intDeck[][] = Cartertools.DeckCards();
-					
-					int[][] intPlayer = new int[5][2];
-					int[][] intDealer = new int[5][2];
-						
-					int intcount;	
-					// Printing Starting cards
-					String strDealerTemp;
-					String strPlayerTemp;
-					String strPlayerTemp2;
-					// Player hand values
-					int intPlayerCards = 2;
-					int intPlayerHand = 0;
-					int intPSum;
-					// order of shuffled deck
-					int intDeckNum = 0;
-					
-					// setting up the player and dealer hand 
-					for(intcount = 0; intcount < 5; intcount++){
-						intPlayer[intcount][0] = intDeck[intcount][0];
-						intPlayer[intcount][1] = intDeck[intcount][1];
+				int intcount;	
+				// Printing Starting cards
+				String strDealerTemp;
+				String strDealerTemp2;
+				String strPlayerTemp;
+				String strPlayerTemp2;
+				// Player hand values
+				int intPlayerCards = 2;
+				int intPlayerHand = 0;
+				int intPSum = 0;
+				// order of shuffled deck
+				int intDeckNum = 0;
+				// player turn end when double down
+				boolean blnDD = true;
+				// Hit or stand
+				char chrHS;
+				// Dealer hand values
+				int intDealerCards = 2;
+				int intDSum = 0;
+				
+				// setting up the player and dealer hand 
+				for(intcount = 0; intcount < 5; intcount++){
+					intPlayer[intcount][0] = intDeck[intcount][0];
+					intPlayer[intcount][1] = intDeck[intcount][1];
 		
-						intDealer[intcount][0] = intDeck[intcount + 5][0];
-						intDealer[intcount][1] = intDeck[intcount + 5][1];
-					}
+					intDealer[intcount][0] = intDeck[intcount + 5][0];
+					intDealer[intcount][1] = intDeck[intcount + 5][1];
+				}
 					
-					// Dealers hand
-					con.println("The dealer's cards are: ");
-					strDealerTemp = Cartertools.CardsName(intDealer[0][0], intDealer[0][1]);
-					con.println(strDealerTemp);
-					con.println();
+				// Dealers hand
+				con.clear();
+				strDealerTemp = Cartertools.CardsName(intDealer[0][0], intDealer[0][1]);
+				strDealerTemp2 = Cartertools.CardsName(intDealer[1][0], intDealer[1][1]);
+				con.println("The dealer's cards are: ");
+				con.println("Dealer card 1: "+strDealerTemp);
+				con.println("Hidden card");
+				con.println();
+				System.out.println("dealer card 1: "+strDealerTemp);
+				System.out.println("Hidden card: "+strDealerTemp2);
+				
+				// Players hand
+				con.println("Your hand: ");
+				
+				// Players first card
+				strPlayerTemp = Cartertools.CardsName(intPlayer[0][0], intPlayer[0][1]);
+				con.println(strPlayerTemp);
+				System.out.println("Player card 1: "+strPlayerTemp);
+				// Players second card
+				strPlayerTemp2 = Cartertools.CardsName(intPlayer[1][0], intPlayer[1][1]);
+				con.println(strPlayerTemp2);
+				System.out.println("Player card 2: "+strPlayerTemp2);
 					
-					// Players hand
-					con.println("Your hand: ");
+				con.println();
+				
+				intPSum = Cartertools.handValue(intPlayer, intPlayerCards);
+				
+				con.println("Current hand Value: "+ intPSum);
+				System.out.println("Sum: "+intPSum);
 					
-					// Players first card
-					strPlayerTemp = Cartertools.CardsName(intPlayer[0][0], intPlayer[0][1]);
-					con.println(strPlayerTemp);
-					System.out.println("Player card 1: "+strPlayerTemp);
-					// Players second card
-					strPlayerTemp2 = Cartertools.CardsName(intPlayer[1][0], intPlayer[1][1]);
-					con.println(strPlayerTemp2);
-					System.out.println("Player card 2: "+strPlayerTemp2);
+				if(intPSum == 21 && intPlayerCards == 2){ // BlackJack 
+					intMoney = intMoney + intBet * 3;
+					con.println("BlackJack!!! You get 3x your bet!");
+					System.out.println("Money = "+intMoney);
 					
-					con.println();
-					
-					intPSum = Cartertools.handValue(intPlayer, intPlayerCards);
-					
-					con.println("Current hand Value: "+ intPSum);
-					System.out.println("Sum: "+intPSum);
-					
-					if(intPSum == 21 && intPlayerCards == 2){ // BlackJack 
-						intMoney = intMoney + intBet * 3;
-						con.println("BlackJack!!! You get 3x your bet!");
-						System.out.println("Money = "+intMoney);
-						
-					}else if(intPSum == 9 || intPSum == 10 || intPSum == 11){ // Double Down
-						con.println("Do you want to double down? [ Y ]/[ N ]");
-						char chrDoubleDown;
-						chrDoubleDown = con.getChar();
-						if(chrDoubleDown == 'Y' || chrDoubleDown == 'y' && intMoney >= intBet * 2){ // If they want to Double down
-							intBet = intBet * 2;
+				}else if(intPSum == 9 || intPSum == 10 || intPSum == 11){ // Double Down
+					con.println("Do you want to double down? [ Y ]/[ N ]");
+					char chrDoubleDown;
+					chrDoubleDown = con.getChar();
+					if(chrDoubleDown == 'Y' || chrDoubleDown == 'y' && intMoney >= intBet * 2){ // If they want to Double down
+						intBet = intBet * 2;
 							
+						// Third card
+						intPlayer[intPlayerCards][0] = intDeck[intDeckNum][0];
+						intPlayer[intPlayerCards][1] = intDeck[intDeckNum][1];
+							
+						String strDD;
+						strDD = Cartertools.CardsName(intPlayer[intPlayerCards][0], intPlayer[intPlayerCards][1]);
+							
+						intDeckNum++;
+						intPlayerCards++;
+							
+						con.println("Your new card is "+strDD);
+						con.sleep(10000);
+						// new sum
+						intPSum = Cartertools.handValue(intPlayer, intPlayerCards);
+						System.out.println("New sum: "+intPSum);
+							
+						// make it so that double down ends your turn
+						blnDD = false;
+						// if player doesn't have enough money
+					}else if(intMoney < intBet * 2){
+						con.println();
+						con.println("You do not have enough to Double down");
+					}
+				}
+					
+				// hit or stay
+				con.println();
+				if(blnDD == true && intPSum < 21){
+					
+					boolean blnhit = true;
+					
+					while(blnDD == true && intPSum < 21 && blnhit == true){
+					
+						con.println("Do you want to hit or stand? [ H ]/[ S ]");
+						chrHS = con.getChar();
+						
+						if(chrHS == 'H' || chrHS == 'h'){
 							// Third card
 							intPlayer[intPlayerCards][0] = intDeck[intDeckNum][0];
 							intPlayer[intPlayerCards][1] = intDeck[intDeckNum][1];
 							
-							String strDD;
-							strDD = Cartertools.CardsName(intPlayer[intPlayerCards][0], intPlayer[intPlayerCards][1]);
+							strPlayerTemp = Cartertools.CardsName(intPlayer[intPlayerCards][0], intPlayer[intPlayerCards][1]);
+							con.println();
+							con.println("Your new card is "+strPlayerTemp);
+							con.println();
 							
 							intDeckNum++;
 							intPlayerCards++;
 							
-							con.println("Your new card is "+strDD);
-							// new sum
 							intPSum = Cartertools.handValue(intPlayer, intPlayerCards);
-							System.out.println("New sum: "+intPSum);
 							
-							// if player doesn't have enough money
-						}else if(intMoney < intBet * 2){
-							con.println();
-							con.println("You do not have enough to Double down");
+							System.out.println("New sum "+intPSum);
+							con.sleep(100);
+							
+						}else if(chrHS == 'S' || chrHS == 's'){
+							blnhit = false;
+						}else{
+							blnhit = false;
 						}
+						
+						// 5 card win scenario
+						if(intPlayerCards == 5 && intPSum <= 21){
+							con.println("You got 5 cards! You automatically win 3x your bet!");
+							intMoney = intMoney + intBet * 3;
+							con.println("Press any key to continue.");
+							con.getChar();
+							System.out.println("money: "+intMoney);
+							continue;
+						}else if(intPSum > 21){
+							// Player Busted
+							con.println("You Busted!");
+						}else{
+							// Calculating Sum of dealers hand
+							intDSum = Cartertools.handValue(intDealer, intDealerCards);
+							// Draw until 17
+							while(intDSum < 17){
+								// Third Card
+								intDealer[intDealerCards][0] = intDeck[intDeckNum][0];
+								intDealer[intDealerCards][1] = intDeck[intDeckNum][1];
+								intDeckNum++;
+								intDealerCards++;
+								intDSum = Cartertools.handValue(intDealer, intDealerCards);
+							}
+							while(blnhit == false){
+								// revealing dealers hand
+								con.println();
+								con.println("Dealer's Hand is: ");
+								for(int intCount = 0; intCount < intDealerCards; intCount++){
+									strDealerTemp = Cartertools.CardsName(intDealer[intCount][0], intDealer[intCount][1]);
+									con.println(strDealerTemp);
+								}
+							
+								con.println();
+								con.println("The dealer's sum is: "+intDSum);
+								con.sleep(500);
+							
+								if(intDSum > 21 || intPSum > intDSum){
+									// player wins
+									con.println("You win!");
+									intMoney = intMoney + intBet * 2;
+								}else if(intPSum == intDSum){
+									// player draws
+									con.println("Push");
+									intMoney = intMoney + intBet;
+								}else{
+									// player loses
+									con.println("You lost");
+								}
+								System.out.println("money: "+intMoney);
+								blnhit = true;
+							}
+						}
+						
+						// See if user wants to play again
+						con.println();
+						con.println("Play Again? [ Y ]/[ N ]");
+						char chrPlayAgain = con.getChar();
+						if(chrPlayAgain == 'Y' || chrPlayAgain == 'y'){
+							blnPlay = true;
+							if(intMoney <= 0){
+								// Player is out of money
+								con.println("Not enough money left to play again.");
+								con.println("Press any key to return to menu.");
+								con.sleep(10000);
+								con.println("GG welll played");
+								con.sleep(2000);
+								con.closeConsole();
+							}
+							return;
+						}else if(chrPlayAgain == 'N' || chrPlayAgain == 'n'){
+							blnPlay = false;
+						}
+						
 					}
 					
-					// hit or stay
-					con.println();
-					
-					
-					
+					TextOutputFile leaderboard = new TextOutputFile("leaderboard.txt", true);
+					leaderboard.println(strName);
+					leaderboard.println(intMoney);
+					leaderboard.close();
 					
 				}
-			}
-			
+					
+		}
 			
 		}else if(chrInput == 'L' || chrInput == 'l'){ // Leaderboard
 			con.clear();
 			
+			con.setBackgroundColor(new Color(0, 0, 0));
+			con.setDrawColor(new Color(0, 0, 0));
+			con.setDrawFont(fntTNR);
+			
+			TextInputFile leaderboard = new TextInputFile("leaderboard.txt");
+		
 		}else if(chrInput == 'H' || chrInput == 'h'){ // Help
 			con.clear();
 			con.setBackgroundColor(new Color(255, 255, 255));
@@ -263,11 +396,5 @@ public class CPTcarter1{
 			con.repaint();
 		}
 			
-		
-		
-		
-		
-	
-		
 	}
 }
