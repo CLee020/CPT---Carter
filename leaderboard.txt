@@ -6,3 +6,5 @@ carter
 900
 Carter
 2000
+Carter Lee
+6000
